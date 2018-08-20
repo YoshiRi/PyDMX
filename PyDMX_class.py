@@ -21,15 +21,15 @@ class PyDMX:
 
     def send(self):
         # Send Break : 88us - 1s
-        ser.break_condition = True
+        self.ser.break_condition = True
         time.sleep(self.breakus/1000000.0)
         
         # Send MAB : 8us - 1s
-        ser.break_condition = False
+        self.ser.break_condition = False
         time.sleep(self.MABus/1000000.0)
         
         # Send Data
-        ser.write(bytearray(data))
+        self.ser.write(bytearray(self.data))
         
         # Sleep
         time.sleep(self.sleepms/1000.0) # between 0 - 1 sec
