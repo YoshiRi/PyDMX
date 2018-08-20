@@ -34,6 +34,10 @@ class PyDMX:
         # Sleep
         time.sleep(self.sleepms/1000.0) # between 0 - 1 sec
 
+    def __del__(self):
+        print('Close serial server!')
+        self.ser.close()
+
 
 if __name__ == '__main__':
     dmx = PyDMX()
@@ -42,3 +46,4 @@ if __name__ == '__main__':
         dmx.set_random_data()
         dmx.send()
     
+    del dmx
