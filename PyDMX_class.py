@@ -34,8 +34,13 @@ class PyDMX:
         # Sleep
         time.sleep(self.sleepms/1000.0) # between 0 - 1 sec
 
+    def sendzero(self):
+        self.data = np.zeros([513],dtype='uint8');
+        self.send()
+
     def __del__(self):
         print('Close serial server!')
+        self.sendzero()
         self.ser.close()
 
 
