@@ -13,6 +13,30 @@ to instal pyserial, try
 pip install pyserial
 ```
 
+# How to use
+
+My class file is defined in  `PyDMX_class.py`.
+
+For the instance create the connection like below:
+
+```python
+from PyDMX_class.py import *
+
+dmx = PyDMX('COM3') # for Linux use '/dev/ttyUSB0' or something
+```
+
+then, you can set '255' value in the address '1' as following:
+
+```python
+dmx.set_data(1,255)
+```
+
+Finally use `send()` function to send dmx signals.
+
+```
+dmx.send()
+```
+
 
 # Program flow
 
