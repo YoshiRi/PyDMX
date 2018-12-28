@@ -31,42 +31,61 @@ class Controller(wx.Frame):
 
     def __init__(self,comport):
         #super(GUI, self).__init__(*args, **kw) #init using the definition of the super class
-        super(GUI, self).__init__(None)
+        super(Controller, self).__init__(None,-1,"Title",size=(300,400))
         # form GUI
         # Define 
         self.dmx = PyDMX(comport)
+        self.InitUI()
 
     def InitUI(self):
 
-        pnl = wx.Panel(self)
+        panel = wx.Panel(self, wx.ID_ANY)
+
+        # statusbar
+        self.CreateStatusBar()
+
+        # sliders
+        self.slider1 = wx.Slider(panel, style=wx.SL_LABELS, pos=(10, 30), maxValue=255)
+        self.slider2 = wx.Slider(panel, style=wx.SL_LABELS, pos=(10, 100), maxValue=255)
+        self.slider3 = wx.Slider(panel, style=wx.SL_LABELS, pos=(10, 170), maxValue=255)
+        # text
+        self.sltx1  = wx.StaticText(panel, -1, 'Red Slider', pos=(10, 10))
+        self.sltx2  = wx.StaticText(panel, -1, 'Green Slider', pos=(10, 80))
+        self.sltx3  = wx.StaticText(panel, -1, 'Blue Slider', pos=(10, 150))
 
         # Button1: Close and end 
-        closeButton = wx.Button(pnl, label='Quit this program', pos=(20, 20))
+        closeButton = wx.Button(panel, label='Quit this program',pos=(10,220))
+
+        # BIND
         closeButton.Bind(wx.EVT_BUTTON, self.OnClose)
+        self.slider1.Bind(wx.EVT_SLIDER, self.slider_value_change)
+        self.slider2.Bind(wx.EVT_SLIDER, self.slider_value_change)
+        self.slider3.Bind(wx.EVT_SLIDER, self.slider_value_change)
 
-        # Button2: Send Signal 
-        closeButton = wx.Button(pnl, label='Send Signal', pos=(120, 20))
-        closeButton.Bind(wx.EVT_BUTTON, self.senddmx)
-
-
-        self.SetSize((350, 250)) # define box size
-        self.SetTitle('wx.Button')
-        self.Centre()
 
     def OnClose(self, e):
-
+        del self.dmx
         self.Close(True)
 
-    def senddmx(self,e):
-        print('send')
+    
+    def slider_value_change(self,event):
+        R = self.slider1.GetValue()
+        G = self.slider2.GetValue()
+        B = self.slider3.GetValue()
+        self.dmx.set_data(1,R)
+        self.dmx.set_data(2,G)
+        self.dmx.set_data(3,B)
+        self.dmx.send()
+        self.SetStatusText('Slider value is ' + str(R)+ ', '+str(G)+ ', '+str(B))
 
 
 if __name__=='__main__':
     app = wx.App()
-    txt = GUIinput()
-    comport = txt.text
+    #txt = GUIinput()
+    #app.MainLoop()
+    #comport = txt.text
 
-    ex = Controller(None)
+    ex = Controller('COM11')
     ex.Show()
     app.MainLoop()
     print('finish')
