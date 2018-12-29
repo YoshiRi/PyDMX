@@ -30,15 +30,33 @@ class GUIinput:
 
 class Controller(wx.Frame):
 
-    def __init__(self,comport):
+    def __init__(self,comport,federnum=3):
         #super(GUI, self).__init__(*args, **kw) #init using the definition of the super class
-        super(Controller, self).__init__(None,-1,"Title",size=(300,400))
+        super(Controller, self).__init__(None,-1,"Title",size=(300,600))
         # form GUI
-        # Define 
-        self.dmx = PyDMX(comport)
+        #self.dmx = PyDMX(comport)
+        if federnum > 512:
+            federnum = 511
+        self.fnum = federnum
         self.InitUI()
 
+    def make_position(self):
+        self.sliderhei = 50
+        self.txthei = 20
+        self.inihei = 10
+
+        self.hpos = []
+        for i in range(self.fnum):
+            # message
+            base = self.inihei+i*(self.sliderhei+self.txthei)
+            self.hpos.append((10,base))
+            # slider
+            self.hpos.append((10,base+self.txthei))
+        # for button
+        self.hpos.append((150,self.inihei))
+
     def InitUI(self):
+        self.make_position()
 
         panel = wx.Panel(self, wx.ID_ANY)
 
@@ -46,47 +64,52 @@ class Controller(wx.Frame):
         self.CreateStatusBar()
 
         # sliders
-        self.slider1 = wx.Slider(panel, style=wx.SL_LABELS, pos=(10, 30), maxValue=255)
-        self.slider2 = wx.Slider(panel, style=wx.SL_LABELS, pos=(10, 100), maxValue=255)
-        self.slider3 = wx.Slider(panel, style=wx.SL_LABELS, pos=(10, 170), maxValue=255)
-        # text
-        self.sltx1  = wx.StaticText(panel, -1, 'DMX1: Red Slider', pos=(10, 10))
-        self.sltx2  = wx.StaticText(panel, -1, 'DMX2:Green Slider', pos=(10, 80))
-        self.sltx3  = wx.StaticText(panel, -1, 'DMX3: Blue Slider', pos=(10, 150))
+        self.sliders = []
+        self.sltxs = []
 
-        # Button1: Close and end 
-        closeButton = wx.Button(panel, label='Quit this program',pos=(10,220))
-
-        # BIND
+        for i in range(self.fnum):
+            self.sltxs.append(wx.StaticText(panel, -1, 'DMX Address: '+str(i+1), pos=self.hpos[2*i]))
+            self.sliders.append(wx.Slider(panel, style=wx.SL_LABELS, pos=self.hpos[2*i+1], maxValue=255))
+            # bind
+            self.sliders[i].Bind(wx.EVT_SLIDER, self.slider_value_change)
+        # button
+        closeButton = wx.Button(panel, label='Quit this program',pos=self.hpos[-1])
         closeButton.Bind(wx.EVT_BUTTON, self.OnClose)
-        self.slider1.Bind(wx.EVT_SLIDER, self.slider_value_change)
-        self.slider2.Bind(wx.EVT_SLIDER, self.slider_value_change)
-        self.slider3.Bind(wx.EVT_SLIDER, self.slider_value_change)
 
 
     def OnClose(self, e):
-        del self.dmx
+        #del self.dmx
         self.Close(True)
 
     
     def slider_value_change(self,event):
-        R = self.slider1.GetValue()
-        G = self.slider2.GetValue()
-        B = self.slider3.GetValue()
-        self.dmx.set_data(1,R)
-        self.dmx.set_data(2,G)
-        self.dmx.set_data(3,B)
-        self.dmx.send()
-        self.SetStatusText('Slider value is ' + str(R)+ ', '+str(G)+ ', '+str(B))
-
+        nums = []
+        for i in range(self.fnum):
+            nums.append( self.sliders[i].GetValue() )
+            #self.dmx.set_data(i+1,nums[i])
+        #self.dmx.send()
+        #self.SetStatusText('Slider value is ' + str(R)+ ', '+str(G)+ ', '+str(B))
+        print(nums)
 
 if __name__=='__main__':
+    import sys
+    args = sys.argv
+
+    try:
+        federnum = int(args[1])
+    except:
+        federnum = 3
+
+    print('Feder number is = '+ str(federnum))
+    # init
     app = wx.App()
+    # catch the input of device
     txt = GUIinput()
     app.MainLoop()
     comport = txt.text
 
-    ex = Controller('COM11')
+    # feder
+    ex = Controller(comport,federnum)
     ex.Show()
     app.MainLoop()
     print('finish')
