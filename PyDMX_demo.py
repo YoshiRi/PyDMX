@@ -32,16 +32,16 @@ class GUIinput:
 
 class Controller(wx.Frame):
 
-    def __init__(self,comport,federnum=3):
+    def __init__(self,comport, fadernum=3):
         #init using the definition of the super class
-        super(Controller, self).__init__(None,-1,"Title",size=(300,federnum*100))
+        super(Controller, self).__init__(None,-1,"DMX  fader",size=(300,600))
         #super(Controller, self).__init__(None)
         
         # form GUI
         #self.dmx = PyDMX(comport)
-        if federnum > 512:
-            federnum = 511
-        self.fnum = federnum
+        if  fadernum > 512:
+             fadernum = 511
+        self.fnum =  fadernum
         self.InitUI()
 
 
@@ -58,7 +58,7 @@ class Controller(wx.Frame):
         layout = wx.BoxSizer(wx.VERTICAL)
 
         for i in range(self.fnum):
-            self.sltxs.append(wx.StaticText(panel, -1, 'DMX Address: '+str(i+1))
+            self.sltxs.append(wx.StaticText(panel, -1, 'DMX Address: '+str(i+1)))
             self.sliders.append(wx.Slider(panel, style=wx.SL_LABELS, maxValue=255))
             layout.Add(self.sltxs[i], 0, wx.EXPAND | wx.LEFT, 10)
             layout.Add(self.sliders[i], 0, wx.EXPAND | wx.LEFT, 10)
@@ -94,11 +94,11 @@ if __name__=='__main__':
     args = sys.argv
 
     try:
-        federnum = int(args[1])
+         fadernum = int(args[1])
     except:
-        federnum = 3
+         fadernum = 3
 
-    print('Feder number is = '+ str(federnum))
+    print(' fader number is = '+ str( fadernum))
     # init
     app = wx.App()
     # catch the input of device
@@ -106,8 +106,8 @@ if __name__=='__main__':
     app.MainLoop()
     comport = txt.text
 
-    # feder
-    ex = Controller(comport,federnum)
+    #  fader
+    ex = Controller(comport, fadernum)
     ex.Show()
     app.MainLoop()
     print('finish')
