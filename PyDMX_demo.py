@@ -14,11 +14,12 @@ class GUIinput:
         # message
         self.frame.label = wx.StaticText(panel_ui, -1, 'Write your device: (example: "COM8" or "/dev/ttyUSB0")', pos=(10, 10))
         # text box
-        self.frame.box = wx.TextCtrl(panel_ui, -1, pos=(10, 30))
+        self.frame.box = wx.TextCtrl(panel_ui, -1, pos=(10, 30),style=wx.TE_PROCESS_ENTER)
         # button        
         btn = wx.Button(panel_ui, -1, 'OK', pos=(10, 60))
-        btn.Bind(wx.EVT_BUTTON, self.Clicked)
-
+        # Bind
+        btn.Bind(wx.EVT_BUTTON, self.Clicked) # button
+        self.frame.box.Bind(wx.EVT_TEXT_ENTER, self.Clicked) #text enter
         self.frame.Show(True)
     
     def Clicked(self,event):
@@ -49,9 +50,9 @@ class Controller(wx.Frame):
         self.slider2 = wx.Slider(panel, style=wx.SL_LABELS, pos=(10, 100), maxValue=255)
         self.slider3 = wx.Slider(panel, style=wx.SL_LABELS, pos=(10, 170), maxValue=255)
         # text
-        self.sltx1  = wx.StaticText(panel, -1, 'Red Slider', pos=(10, 10))
-        self.sltx2  = wx.StaticText(panel, -1, 'Green Slider', pos=(10, 80))
-        self.sltx3  = wx.StaticText(panel, -1, 'Blue Slider', pos=(10, 150))
+        self.sltx1  = wx.StaticText(panel, -1, 'DMX1: Red Slider', pos=(10, 10))
+        self.sltx2  = wx.StaticText(panel, -1, 'DMX2:Green Slider', pos=(10, 80))
+        self.sltx3  = wx.StaticText(panel, -1, 'DMX3: Blue Slider', pos=(10, 150))
 
         # Button1: Close and end 
         closeButton = wx.Button(panel, label='Quit this program',pos=(10,220))
@@ -81,9 +82,9 @@ class Controller(wx.Frame):
 
 if __name__=='__main__':
     app = wx.App()
-    #txt = GUIinput()
-    #app.MainLoop()
-    #comport = txt.text
+    txt = GUIinput()
+    app.MainLoop()
+    comport = txt.text
 
     ex = Controller('COM11')
     ex.Show()
