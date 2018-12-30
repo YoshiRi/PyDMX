@@ -4,6 +4,7 @@ Python based DMX control demo program.
 ## Requirement
 - USB-RS485 Converter
 - PySerial
+- wxPython (only for fader)
 
 I used [DTECH USB-RS485 Converter](https://www.amazon.co.jp/DTECH-USB%E3%82%B7%E3%83%AA%E3%82%A2%E3%83%AB%E3%83%9D%E3%83%BC%E3%83%88%E3%82%B3%E3%83%B3%E3%83%90%E3%83%BC%E3%82%BF%E3%83%BC-RS422%E3%81%AB%E6%8E%A5%E7%B6%9A-FTDI%E3%83%81%E3%83%83%E3%83%97%E4%BB%98%E3%81%8D%E3%82%A2%E3%83%80%E3%83%97%E3%82%BF%E3%83%BC%E3%82%B1%E3%83%BC%E3%83%96%E3%83%ABWindows-Xp%E3%81%8A%E3%82%88%E3%81%B3Mac%E3%81%AB%E5%AF%BE%E5%BF%9C/dp/B076WVFXN8/ref=sr_1_1?ie=UTF8&qid=1533279683&sr=8-1&keywords=Dtech+USB+RS485).
 
@@ -13,14 +14,22 @@ to instal pyserial, try
 pip install pyserial
 ```
 
-# How to use
+for the GUI fader, wxPython is used.
 
-My class file is defined in  `PyDMX_class.py`.
+```
+pip install wxPython
+```
+
+# How to use 
+
+## PyDMX.py
+
+`PyDMX.py` contains simple DMX control class.
 
 For the instance create the connection like below:
 
 ```python
-from PyDMX_class.py import *
+from PyDMX.py import *
 
 dmx = PyDMX('COM3') # for Linux use '/dev/ttyUSB0' or something
 ```
@@ -36,6 +45,21 @@ Finally use `send()` function to send dmx signals.
 ```
 dmx.send()
 ```
+
+## PyDMX_fader.py
+
+`PyDMX_fader.py` contains the GUI fader class named `Controller()`. 
+
+You can just run this program as a fader.
+
+```
+python PyDMX_fader.py <fader channel number>
+```
+
+The default fader channel number is 4.
+
+You may see following window after putting the COM port.
+![](https://i.imgur.com/Z1E0KOP.png)
 
 
 # Program flow

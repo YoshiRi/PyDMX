@@ -35,12 +35,11 @@ class Controller(wx.Frame):
     def __init__(self,comport, fadernum=3):
         #init using the definition of the super class
         super(Controller, self).__init__(None,-1,"DMX  fader",size=(300,600))
-        #super(Controller, self).__init__(None)
         
         # form GUI
-        #self.dmx = PyDMX(comport)
+        self.dmx = PyDMX(comport)
         if  fadernum > 512:
-             fadernum = 511
+             fadernum = 512
         self.fnum =  fadernum
         self.InitUI()
 
@@ -58,7 +57,7 @@ class Controller(wx.Frame):
         layout = wx.BoxSizer(wx.VERTICAL)
 
         for i in range(self.fnum):
-            self.sltxs.append(wx.StaticText(panel, -1, 'DMX Address: '+str(i+1)))
+            self.sltxs.append(wx.StaticText(panel, -1, 'DMX Address: '+str(i)))
             self.sliders.append(wx.Slider(panel, style=wx.SL_LABELS, maxValue=255))
             layout.Add(self.sltxs[i], 0, wx.EXPAND | wx.LEFT, 10)
             layout.Add(self.sliders[i], 0, wx.EXPAND | wx.LEFT, 10)
@@ -76,7 +75,7 @@ class Controller(wx.Frame):
 
 
     def OnClose(self, e):
-        #del self.dmx
+        del self.dmx
         self.Close(True)
 
     
@@ -84,8 +83,8 @@ class Controller(wx.Frame):
         nums = []
         for i in range(self.fnum):
             nums.append( self.sliders[i].GetValue() )
-            #self.dmx.set_data(i+1,nums[i])
-        #self.dmx.send()
+            self.dmx.set_data(i,nums[i])
+        self.dmx.send()
         #self.SetStatusText('Slider value is ' + str(R)+ ', '+str(G)+ ', '+str(B))
         print(nums)
 
@@ -96,7 +95,7 @@ if __name__=='__main__':
     try:
          fadernum = int(args[1])
     except:
-         fadernum = 3
+         fadernum = 4
 
     print(' fader number is = '+ str( fadernum))
     # init

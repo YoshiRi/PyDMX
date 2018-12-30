@@ -1,0 +1,52 @@
+### FdiTools Specific
+*.pdf
+*.emf
+
+### Matlab
+*.asv
+*.mex*
+slprj/
+
+### Embedded Source
+*.asm
+*.lst
+*.obj
+ 
+### Visual Studio Project
+Debug/
+.vscode/
+*.suo
+*.sql
+*.sdf
+*.db
+*.opendb
+*.idb
+*.pdb
+
+### Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.log
+
+### Packages
+*.7z
+*.iso
+*.rar
+*.tar
+*.zip
+
+### OS generated files
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+._*
+
+### image
+*.png
+*.jpg
+
+/img
