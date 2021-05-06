@@ -46,6 +46,24 @@ Finally use `send()` function to send dmx signals.
 dmx.send()
 ```
 
+### Option
+
+Here shows option in the constructor.
+
+- `Option Name` (Default Value)
+  - COM (COM8): Comport device name.  Check it on your device manager.
+  - Cnumber (512): DMX channels number. DMX512 protocol uses 512 channel. 
+  - Brate (250000): Baudrate. Usually do not need change.
+  - Bsize (8): Bite size decided by DMX512 protocol.
+  - StopB (2): Stop bit number decided by DMX512 protocol.
+
+
+You can add these options like a following example.
+
+```python
+mydmx = PyDMX('/dev/ttyUSB0',Cnumber=1,Brate=9600)
+```
+
 ## PyDMX_fader.py
 
 `PyDMX_fader.py` contains the GUI fader class named `Controller()`. 

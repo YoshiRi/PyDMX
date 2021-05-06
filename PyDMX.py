@@ -4,17 +4,18 @@ import numpy as np
 
 
 class PyDMX:
-    def __init__(self,COM='COM8',Brate=250000,Bsize=8,StopB=2):
+    def __init__(self,COM='COM8',Cnumber=512,Brate=250000,Bsize=8,StopB=2):
         #start serial
+        self.channel_num = Cnumber
         self.ser = serial.Serial(COM,baudrate=Brate,bytesize=Bsize,stopbits=StopB)
-        self.data = np.zeros([513],dtype='uint8')
+        self.data = np.zeros([self.channel_num+1],dtype='uint8')
         self.data[0] = 0 # StartCode
         self.sleepms = 50.0
         self.breakus = 176.0
         self.MABus = 16.0
         
     def set_random_data(self):
-        self.data[1:513]= np.random.rand(512)*255
+        self.data[1:self.channel_num+1]= np.random.rand(self.channel_num)*255
 
     def set_data(self,id,data):
         self.data[id]=data
@@ -35,7 +36,7 @@ class PyDMX:
         time.sleep(self.sleepms/1000.0) # between 0 - 1 sec
 
     def sendzero(self):
-        self.data = np.zeros([513],dtype='uint8')
+        self.data = np.zeros([self.channel_num+1],dtype='uint8')
         self.send()
 
     def __del__(self):
