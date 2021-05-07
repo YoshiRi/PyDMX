@@ -63,9 +63,11 @@ class PyDMX:
 
     def __del__(self):
         print('Close serial server!')
+        # close with preserving current DMX data, I guess you may not need to reset DMX signal in this option.
         if self.use_prev_data:
             self.preserve_data()
-        self.sendzero()
+        else:
+            self.sendzero()
         self.ser.close()
     
 
