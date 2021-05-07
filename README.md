@@ -46,16 +46,17 @@ Finally use `send()` function to send dmx signals.
 dmx.send()
 ```
 
-### Option
+### Communication option
 
 Here shows option in the constructor.
 
+
 - `Option Name` (Default Value)
-  - COM (COM8): Comport device name.  Check it on your device manager.
-  - Cnumber (512): DMX channels number. DMX512 protocol uses 512 channel. 
-  - Brate (250000): Baudrate. Usually do not need change.
-  - Bsize (8): Bite size decided by DMX512 protocol.
-  - StopB (2): Stop bit number decided by DMX512 protocol.
+  - COM (`COM8`): Comport device name.  Check it on your device manager.
+  - Cnumber (`512`): DMX channels number. DMX512 protocol uses 512 channel. 
+  - Brate (`250000`): Baudrate. Usually do not need change.
+  - Bsize (`8`): Bite size decided by DMX512 protocol.
+  - StopB (`2`): Stop bit number decided by DMX512 protocol.
 
 
 You can add these options like a following example.
@@ -63,6 +64,14 @@ You can add these options like a following example.
 ```python
 mydmx = PyDMX('/dev/ttyUSB0',Cnumber=1,Brate=9600)
 ```
+
+### save and load past data
+
+To save and load past DMX data, you can try following option.
+
+- `Option Name` (Default Value)
+  - use_prev_data (`False`): Set `True` if you want to preserve and load past DMX data. 
+  - preserve_data_name (`"preserved_data.txt"`): saved data file name.
 
 ## PyDMX_fader.py
 
