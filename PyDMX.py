@@ -56,7 +56,7 @@ class PyDMX:
         self.send()
 
     def load_data(self):
-        self.data = np.loadtxt(self.preserve_data_name,dtype=’int’)        
+        self.data = np.loadtxt(self.preserve_data_name,dtype='int')        
 
     def preserve_data(self):
         np.savetxt(self.preserve_data_name,self.data)        
